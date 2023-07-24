@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVHInfiniteMod", "AVHInfiniteMod\AVHInfiniteMod.csproj", "{46C3E314-5D77-4A27-BB50-20AD44685E08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46C3E314-5D77-4A27-BB50-20AD44685E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C3E314-5D77-4A27-BB50-20AD44685E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C3E314-5D77-4A27-BB50-20AD44685E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C3E314-5D77-4A27-BB50-20AD44685E08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {127348AB-CCA8-488C-BA56-3807D0F24B3A}
+	EndGlobalSection
+EndGlobal
