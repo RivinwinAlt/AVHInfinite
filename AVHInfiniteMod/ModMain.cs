@@ -131,11 +131,12 @@ namespace AVHInfiniteMod
 
 		public override void OnLateUpdate() // At end of each frame during gameplay
 		{
-			if (Input.GetKeyDown(toggleKey))
+			// Cheat key for testing
+			/*if (Input.GetKeyDown(toggleKey))
 			{
 				Currency.instance.UpdateCurrency(100000000, true);
 				Patches.SpawnerSettings.Instance.SetRound(99);
-			}
+			}*/
 		}
 
 		public override void OnDeinitializeMelon() // Destructor
