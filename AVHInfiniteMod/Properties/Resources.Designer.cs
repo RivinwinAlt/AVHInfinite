@@ -59,15 +59,5 @@ namespace AVHInfiniteMod.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] infiniterounds {
-            get {
-                object obj = ResourceManager.GetObject("infiniterounds", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

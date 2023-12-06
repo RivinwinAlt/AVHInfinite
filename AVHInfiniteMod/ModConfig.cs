@@ -1,69 +1,138 @@
-﻿using MelonLoader;
-using UnityEngine;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HarmonyLib;
+﻿using System;
+using System.Configuration;
 
 namespace AVHInfiniteMod
 {
     public class ModConfig
     {
-        public string modFolder, configFilePath;
+        private bool initialized;
+        private Configuration configFile;
+        private KeyValueConfigurationCollection appSettings;
+        private ModConfig() { }
 
-        public const string defaultSettings =
-            "AVH Infinite Rounds Mod by Rivinwin\n" +
-            "Mod Version: 1.0\n" +
-            "Config Version: 1.0\n";
-
-        public ModConfig(string fileName)
+        // Singleton access through Config.Instance
+        private static ModConfig instance = null;
+        public static ModConfig Instance
         {
-            modFolder = $"{Environment.CurrentDirectory}\\Mods\\{fileName}";
-            configFilePath = modFolder + "\\settings.txt";
-
-            if (!Directory.Exists(modFolder)) Directory.CreateDirectory("Mods\\" + fileName);
-
-            if (!File.Exists(configFilePath))  File.WriteAllText(configFilePath, defaultSettings);
-            if (!File.Exists(modFolder + "\\infiniterounds.assets")) File.WriteAllBytes(modFolder + "\\infiniterounds.assets", AVHInfiniteMod.Properties.Resources.infiniterounds);
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ModConfig();
+                }
+                return instance;
+            }
         }
 
-        private int ReadInt(string key)
+        private bool Save()
         {
-            int value = -1;
-
-            foreach (string line in File.ReadLines(configFilePath))
+            if (!CheckValid()) return false;
+            try
             {
-                if (line.Contains(key))
-                {
-                    if (!int.TryParse(line.Substring(line.IndexOf("=") + 1).Trim(), out value))
-                    {
-                        //config value is corrupted, throw error
-                    }
-                }
+                configFile.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
             }
-
-            return value;
+            catch
+            {
+                return false;
+            }
+            return true;
         }
 
-        private float ReadFloat(string key)
+        public bool CheckValid()
         {
-            float value = -1;
+            if (configFile == null) configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            if (configFile == null) return false;
 
-            foreach (string line in File.ReadLines(configFilePath))
+            if (appSettings == null) appSettings = configFile.AppSettings.Settings;
+            return initialized = appSettings != null;
+        }
+
+        public bool CheckValid(string key)
+        {
+            if (configFile == null) configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            if (configFile == null) return false;
+
+            if (appSettings == null) appSettings = configFile.AppSettings.Settings;
+            initialized = appSettings != null;
+            if (!initialized) return false;
+
+            return appSettings[key] != null;
+        }
+
+
+        // READ Functions
+        public bool Read(string key, out string value)
+        {
+            value = null;
+            if (!CheckValid(key)) return false;
+            value = appSettings[key].Value;
+            return true;
+        }
+
+        public bool Read(string key, out bool value)
+        {
+            value = false;
+            if (!CheckValid(key)) return false;
+            return bool.TryParse(appSettings[key].Value, out value);
+        }
+
+        public bool Read(string key, out int value)
+        {
+            value = 0;
+            if (!CheckValid(key)) return false;
+            return Int32.TryParse(appSettings[key].Value, out value);
+        }
+
+        public bool Read(string key, out float value)
+        {
+            value = 0.0f;
+            if (!CheckValid(key)) return false;
+            return float.TryParse(appSettings[key].Value, out value);
+        }
+
+        public bool Read(string key, out double value)
+        {
+            value = 0.0d;
+            if (!CheckValid(key)) return false;
+            return double.TryParse(appSettings[key].Value, out value);
+        }
+
+
+        // WRITE Functions
+        public bool Write(string key, string value)
+        {
+            if (CheckValid(key))
             {
-                if (line.Contains(key))
-                {
-                    if (!float.TryParse(line.Substring(line.IndexOf("=") + 1).Trim(), out value))
-                    {
-                        //config value is corrupted, throw error
-                    }
-                }
+                appSettings[key].Value = value;
+                return Save();
             }
+            else if (initialized)
+            {
+                appSettings.Add(key, value);
+                return Save();
+            }
+            return false;
+        }
 
-            return value;
+        public bool Write(string key, bool value)
+        {
+            return Write(key, value.ToString());
+        }
+
+        public bool Write(string key, int value)
+        {
+            return Write(key, value.ToString());
+        }
+
+        public bool Write(string key, float value)
+        {
+            return Write(key, value.ToString());
+        }
+
+        public bool Write(string key, double value)
+        {
+            return Write(key, value.ToString());
         }
     }
 }

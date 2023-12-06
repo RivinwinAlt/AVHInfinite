@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: MelonInfo(typeof(AVHInfiniteMod.ModMain), "Infinite Mode", "1.0.0", "Rivinwin")]
+[assembly: MelonInfo(typeof(AVHInfiniteMod.ModMain), "Infinite Mod", "1.0.0", "Rivinwin")]
 [assembly: MelonGame("Sayan", "Apes vs Helium")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
